@@ -31,6 +31,7 @@ from ListaDeCoresRGB import *
 MeiaSeta = Polygon()
 Mastro = Polygon()
 Mapa = Polygon()
+Control = Polygon()
 
 # Limites da Janela de Seleção
 Min = Ponto()
@@ -52,7 +53,8 @@ def CarregaModelos():
     global MeiaSeta, Mastro
     MeiaSeta.LePontosDeArquivo("MeiaSeta.txt")
     Mastro.LePontosDeArquivo("Mastro.txt")
-    Mapa.LePontosDeArquivo("EstadoRS.txt");
+    Mapa.LePontosDeArquivo("EstadoRS.txt")
+    Control.LePontosDeArquivo("Control.txt")
     A, B = Mapa.getLimits()
     print("Limites do Mapa")
     A.imprime()
@@ -62,7 +64,7 @@ def CarregaModelos():
 def DesenhaPersonagem():
     SetColor(YellowGreen)
     glTranslatef(53,33,0)
-    Mapa.desenhaPoligono()
+    # Mapa.desenhaPoligono()
     pass
 
 
@@ -82,12 +84,23 @@ def CriaInstancias():
 # ***********************************************************************************
 def CriaCurvas():
     global Curvas
-    C = Bezier(Ponto (-5,-5), Ponto (0,6), Ponto (5,-5))
-    Curvas.append(C)
-    C = Bezier(Ponto(5, -5), Ponto(15, 0), Ponto(12, 12))
-    Curvas.append(C)
-    C = Bezier(Ponto(-10, -5), Ponto(-15, 15), Ponto(12, 12))
-    Curvas.append(C)
+
+    #Bezier(Começo, Controle, Fim)
+
+    v1 = Control.getVertice(3)
+    v2 = Control.getVertice(5)
+    v3 = Control.getVertice(7)
+
+    print('v1')
+    v1.imprime()
+
+    print('v2')
+    v2.imprime()
+
+    print('v3')
+    v3.imprime()
+
+    Curvas.append(Bezier(v1, v2, v3))
 
 # ***********************************************************************************
 def init():
@@ -99,14 +112,13 @@ def init():
     CriaInstancias()
     CriaCurvas()
 
-    d:float = 15
+    d:float = 50
     Min = Ponto(-d,-d)
     Max = Ponto(d,d)
 
 # ****************************************************************
 def animate():
     global angulo
-    print('a')
     angulo = angulo + 1
     glutPostRedisplay()
 
