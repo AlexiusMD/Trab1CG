@@ -25,6 +25,7 @@ from Poligonos import *
 from InstanciaBZ import *
 from Bezier import *
 from ListaDeCoresRGB import *
+import random
 # ***********************************************************************************
 
 # Modelos de Objetos
@@ -106,7 +107,7 @@ def init():
     CriaInstancias()
     CriaCurvas()
 
-    d:float = 50
+    d:float = 100
     Min = Ponto(-d,-d)
     Max = Ponto(d,d)
 
@@ -186,8 +187,8 @@ def DesenhaCurvas():
         SetColor(Blue)
         I.Traca()
         glLineWidth(2)
-        SetColor(Bronze)
-        I.TracaPoligonoDeControle()
+        #SetColor(Bronze)
+        #I.TracaPoligonoDeControle()
         #DesenhaPoligonoDeControle(v)
 
 
@@ -201,7 +202,7 @@ def display():
     glLoadIdentity()
 
     glColor3f(1,0,0) # R, G, B  [0..1]
-    DesenhaEixos()
+    # DesenhaEixos()
 
     DesenhaPersonagens()
     DesenhaCurvas()
