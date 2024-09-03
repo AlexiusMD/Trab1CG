@@ -28,6 +28,9 @@ from ListaDeCoresRGB import *
 import random
 # ***********************************************************************************
 
+ValidCurves = {}
+aux_points = []
+
 # Modelos de Objetos
 MeiaSeta = Polygon()
 Mastro = Polygon()
@@ -90,12 +93,29 @@ def CriaCurvas():
     with open('Curves.txt') as f:
         lines = f.readlines()
         for line in lines[1:]:
-            x = line.split()
-            v1 = Control.getVertice(int(x[0]))
-            v2 = Control.getVertice(int(x[1]))
-            v3 = Control.getVertice(int(x[2]))
-            Curvas.append(Bezier(v1, v2, v3))
-        
+            text = line.split()
+            line_start = int(text[0])
+            line_control = int(text[1])
+            line_end = int(text[2])
+
+            p1 = Control.getVertice(line_start)
+            p2 = Control.getVertice(line_control)
+            p3 = Control.getVertice(line_end)
+
+            curve = Bezier(p1, p2, p3)
+
+            Curvas.append(curve)
+            addToValidCurves(curve, line_start)
+            addToValidCurves(curve, line_end)
+
+# ***********************************************************************************
+
+def addToValidCurves(curve, point):
+    if point not in ValidCurves.keys():
+        ValidCurves[point] = []
+
+    ValidCurves[point].append(curve)
+
 
 # ***********************************************************************************
 def init():
@@ -183,7 +203,12 @@ def DesenhaCurvas():
     v = 0
     #for v, I in enumerate(Curvas):
     for I in Curvas:
-        glLineWidth(3)
+
+        if I in ValidCurves[0]:
+            glLineWidth(10)
+        else:
+            glLineWidth(3)
+
         SetColor(SummerSky)
         I.Traca()
         glLineWidth(2)
