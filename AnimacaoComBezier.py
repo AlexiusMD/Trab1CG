@@ -86,21 +86,15 @@ def CriaCurvas():
     global Curvas
 
     #Bezier(Começo, Controle, Fim)
-
-    v1 = Control.getVertice(3)
-    v2 = Control.getVertice(5)
-    v3 = Control.getVertice(7)
-
-    print('v1')
-    v1.imprime()
-
-    print('v2')
-    v2.imprime()
-
-    print('v3')
-    v3.imprime()
-
-    Curvas.append(Bezier(v1, v2, v3))
+    with open('Curves.txt') as f:
+        lines = f.readlines()
+        for line in lines[1:]:
+            x = line.split()
+            v1 = Control.getVertice(int(x[0]))
+            v2 = Control.getVertice(int(x[1]))
+            v3 = Control.getVertice(int(x[2]))
+            Curvas.append(Bezier(v1, v2, v3))
+        
 
 # ***********************************************************************************
 def init():
