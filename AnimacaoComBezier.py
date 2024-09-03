@@ -64,9 +64,9 @@ def CarregaModelos():
 # ***********************************************************************************
 def DesenhaPersonagem():
     SetColor(YellowGreen)
-    glTranslatef(53,33,0)
+    glTranslatef(0,0,0)
     # Mapa.desenhaPoligono()
-    pass
+    Mastro.desenhaPoligono()
 
 
 # ***********************************************************************************
@@ -184,7 +184,7 @@ def DesenhaCurvas():
     #for v, I in enumerate(Curvas):
     for I in Curvas:
         glLineWidth(3)
-        SetColor(Blue)
+        SetColor(SummerSky)
         I.Traca()
         glLineWidth(2)
         #SetColor(Bronze)
@@ -229,14 +229,14 @@ def keyboard(*args):
 # **********************************************************************
 def arrow_keys(a_keys: int, x: int, y: int):
     if a_keys == GLUT_KEY_UP:         # Se pressionar UP
-        pass
+        Personagens[0].posicao.y += 5
     if a_keys == GLUT_KEY_DOWN:       # Se pressionar DOWN
-        pass
+        Personagens[0].posicao.y -= 5
     if a_keys == GLUT_KEY_LEFT:       # Se pressionar LEFT
-        Personagens[1].posicao.x -= 0.5
+        Personagens[0].posicao.x -= 5
         
     if a_keys == GLUT_KEY_RIGHT:      # Se pressionar RIGHT
-        Personagens[1].rotacao += 1
+        Personagens[0].posicao.x += 5
 
     glutPostRedisplay()
 
