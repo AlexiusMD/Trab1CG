@@ -69,7 +69,7 @@ def DesenhaPersonagem():
     SetColor(YellowGreen)
     glTranslatef(0,0,0)
     # Mapa.desenhaPoligono()
-    Mastro.desenhaPoligono()
+    Mastro.desenhaPoligono() #Inicializa personagem triangulo
 
 
 # ***********************************************************************************
@@ -78,7 +78,7 @@ def DesenhaPersonagem():
 def CriaInstancias():
     global Personagens
 
-    Personagens.append(InstanciaBZ())
+    Personagens.append(InstanciaBZ(ValidCurves[0][0]))
     Personagens[0].modelo = DesenhaPersonagem
     Personagens[0].rotacao = 0
     Personagens[0].posicao = Ponto(0,0)
@@ -124,8 +124,8 @@ def init():
     glClearColor(1, 1, 1, 1)
 
     CarregaModelos()
-    CriaInstancias()
     CriaCurvas()
+    CriaInstancias()
 
     d:float = 100
     Min = Ponto(-d,-d)
@@ -254,9 +254,9 @@ def keyboard(*args):
 # **********************************************************************
 def arrow_keys(a_keys: int, x: int, y: int):
     if a_keys == GLUT_KEY_UP:         # Se pressionar UP
-        Personagens[0].posicao.y += 5
+        Personagens[0].moveUpCurve()
     if a_keys == GLUT_KEY_DOWN:       # Se pressionar DOWN
-        Personagens[0].posicao.y -= 5
+        Personagens[0].moveDownCurve()
     if a_keys == GLUT_KEY_LEFT:       # Se pressionar LEFT
         Personagens[0].posicao.x -= 5
         
