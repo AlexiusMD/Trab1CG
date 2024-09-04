@@ -78,7 +78,7 @@ def DesenhaPersonagem():
 def CriaInstancias():
     global Personagens
 
-    Personagens.append(InstanciaBZ(ValidCurves[0][0]))
+    Personagens.append(InstanciaBZ(Curvas[8]))
     Personagens[0].modelo = DesenhaPersonagem
     Personagens[0].rotacao = 0
     Personagens[0].posicao = Ponto(0,0)
@@ -204,11 +204,7 @@ def DesenhaCurvas():
     #for v, I in enumerate(Curvas):
     for I in Curvas:
 
-        if I in ValidCurves[0]:
-            glLineWidth(10)
-        else:
-            glLineWidth(3)
-
+        glLineWidth(3)
         SetColor(SummerSky)
         I.Traca()
         glLineWidth(2)
@@ -218,6 +214,7 @@ def DesenhaCurvas():
 
 
 # ***********************************************************************************
+# Executada todo frame
 def display():
 
 	# Limpa a tela coma cor de fundo

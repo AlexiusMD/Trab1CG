@@ -33,21 +33,35 @@ class InstanciaBZ:
     def setModelo(self, func):
         self.modelo = func
 
+    def update_position(self):
+        if self.curva:
+            self.posicao = self.curva.Calcula(self.t)
+
     def moveUpCurve(self):
         self.t += 0.05
         if self.t > 1: self.t = 1
-        self.posicao = self.curva.Calcula(self.t)
+        self.update_position()
 
     def moveDownCurve(self):
         self.t -= 0.05
         if self.t < 0: self.t = 0
-        self.posicao = self.curva.Calcula(self.t)
+        self.update_position()
 
+    def updateCurve(self):
+        pass
+        # curve = self.curva
+        # while self.curva == curve:
+        #     self.curva = random.choice(self.validCurves[self.curva.Coords[2]])
 
     def Desenha(self):
-        #print ("Desenha")
-        #self.escala.imprime("\tEscala: ")
-        #print ("\tRotacao: ", self.rotacao)
+        # print ("Desenha")
+        # self.escala.imprime("\tEscala: ")
+        print ("\tRotacao: ", self.rotacao)
+
+        # if self.t == 1:
+        #     self.updateCurve()
+        #     self.t = 0
+
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)
         glRotatef(self.rotacao, 0, 0, 1)
