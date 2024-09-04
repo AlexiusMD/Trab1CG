@@ -12,12 +12,13 @@ from Ponto import *
 
 """ Classe Instancia """
 class InstanciaBZ:   
-    def __init__(self):
+    def __init__(self, curva):
         self.posicao = Ponto (0,0,0) 
         self.escala = Ponto (1,1,1)
         self.rotacao:float = 0.0
         self.modelo = None
         self.t = 0.0
+        self.curva = curva
     
     """ Imprime os valores de cada eixo do ponto """
     # Faz a impressao usando sobrecarga de funcao
@@ -31,6 +32,17 @@ class InstanciaBZ:
     """ Define o modelo a ser usada para a desenhar """
     def setModelo(self, func):
         self.modelo = func
+
+    def moveUpCurve(self):
+        self.t += 0.05
+        if self.t > 1: self.t = 1
+        self.posicao = self.curva.Calcula(self.t)
+
+    def moveDownCurve(self):
+        self.t -= 0.05
+        if self.t < 0: self.t = 0
+        self.posicao = self.curva.Calcula(self.t)
+
 
     def Desenha(self):
         #print ("Desenha")
