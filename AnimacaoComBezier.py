@@ -28,6 +28,8 @@ from ListaDeCoresRGB import *
 import random
 # ***********************************************************************************
 
+global current_curve
+
 ValidCurves = {}
 aux_points = []
 
@@ -217,8 +219,12 @@ def DesenhaCurvas():
     #for v, I in enumerate(Curvas):
     for I in Curvas:
 
-        glLineWidth(3)
-        SetColor(SummerSky)
+        if I == Personagens[0].curva:
+            glLineWidth(6)
+            SetColor(SkyBlue)
+        else:
+            glLineWidth(3)
+            SetColor(SummerSky)
         I.Traca()
         glLineWidth(2)
         #SetColor(Bronze)
