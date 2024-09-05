@@ -108,6 +108,19 @@ def CriaCurvas():
             addToValidCurves(curve, line_start)
             addToValidCurves(curve, line_end)
 
+    for curva in Curvas:
+        start = curva.Coords[0]
+        end = curva.Coords[2]
+
+        for curva_aux in Curvas:
+            start_aux = curva_aux.Coords[0]
+            end_aux = curva_aux.Coords[2]
+
+            if start.x == start_aux.x and start.y == start_aux.y and curva_aux is not curva:
+                curva.adjacentAtStart.append(curva_aux)
+            if end.x == end_aux.x and end.y == end_aux.y and curva_aux is not curva:
+                curva.adjacentAtEnd.append(curva_aux)
+
 # ***********************************************************************************
 
 def addToValidCurves(curve, point):

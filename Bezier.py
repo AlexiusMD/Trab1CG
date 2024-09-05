@@ -17,6 +17,8 @@ class Bezier:
         #print ("Construtora da Bezier")
         self.ComprimentoTotalDaCurva = 0.0
         self.Coords = []
+        self.adjacentAtStart = []
+        self.adjacentAtEnd = []
         #print (args)
         for i in args:
             self.Coords.append(i)
@@ -53,4 +55,10 @@ class Bezier:
     def getPC(self, i):
         temp = copy.deepcopy(self.Coords[i])
         return temp
+    
+    def getAdjacentCurvesAtStart(self):
+        return self.adjacentAtStart
+
+    def getAdjacentCurvesAtEnd(self):
+        return self.adjacentAtEnd
             

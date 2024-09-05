@@ -9,6 +9,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from Ponto import *
+import random
 
 """ Classe Instancia """
 class InstanciaBZ:   
@@ -48,19 +49,19 @@ class InstanciaBZ:
         self.update_position()
 
     def updateCurve(self):
-        pass
-        # curve = self.curva
-        # while self.curva == curve:
-        #     self.curva = random.choice(self.validCurves[self.curva.Coords[2]])
+        adj = self.curva.getAdjacentCurvesAtEnd()
+        self.curva = random.choice(adj)
+        
+        
 
     def Desenha(self):
         # print ("Desenha")
         # self.escala.imprime("\tEscala: ")
         print ("\tRotacao: ", self.rotacao)
 
-        # if self.t == 1:
-        #     self.updateCurve()
-        #     self.t = 0
+        if self.t == 1:
+            self.updateCurve()
+            self.t = 0
 
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)
