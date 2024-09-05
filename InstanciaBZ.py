@@ -39,28 +39,28 @@ class InstanciaBZ:
             self.posicao = self.curva.Calcula(self.t)
 
     def moveUpCurve(self):
-        self.t += 0.05
-        if self.t > 1: self.t = 1
+        self.t += 0.05 if self.t < 1 else 0
         self.update_position()
 
     def moveDownCurve(self):
-        self.t -= 0.05
-        if self.t < 0: self.t = 0
+        self.t -= 0.05 if self.t > 0 else 0
         self.update_position()
 
-    def updateCurve(self):
-        adj = self.curva.getAdjacentCurvesAtEnd()
-        self.curva = random.choice(adj)
-        
-        
+    # def updateCurve(self):
+    #     adj = self.curva.getAdjacentCurvesAtEnd()
+    #     self.curva = random.choice(adj)
 
     def Desenha(self):
         # print ("Desenha")
         # self.escala.imprime("\tEscala: ")
         print ("\tRotacao: ", self.rotacao)
 
-        if self.t == 1:
-            self.updateCurve()
+        if self.t > 1:
+            self.curva = random.choice(self.curva.getAdjacentCurvesAtEnd())
+            self.t = 1
+
+        if self.t < 0:
+            self.curva = random.choice(self.curva.getAdjacentCurvesAtStart())
             self.t = 0
 
         glPushMatrix()
