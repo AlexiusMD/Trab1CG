@@ -20,6 +20,7 @@ class InstanciaBZ:
         self.modelo = None
         self.t = 0.0
         self.curva = curva
+        self.forward = True
     
     """ Imprime os valores de cada eixo do ponto """
     # Faz a impressao usando sobrecarga de funcao
@@ -39,10 +40,22 @@ class InstanciaBZ:
             self.posicao = self.curva.Calcula(self.t)
 
     def moveUpCurve(self):
+        if self.forward:
+            self.increaseT()
+        else:
+            self.decreaseT()
+
+    def moveDownCurve(self):
+        if self.forward:
+            self.decreaseT()
+        else:
+            self.increaseT()
+
+    def increaseT(self):
         self.t += 0.05 if self.t < 1 else 0
         self.update_position()
 
-    def moveDownCurve(self):
+    def decreaseT(self):
         self.t -= 0.05 if self.t > 0 else 0
         self.update_position()
 
@@ -50,18 +63,34 @@ class InstanciaBZ:
     #     adj = self.curva.getAdjacentCurvesAtEnd()
     #     self.curva = random.choice(adj)
 
+    def switchCurve(self, next_curve):
+        next_curve_start = next_curve.getPC(0)
+        next_curve_end = next_curve.getPC(2)
+
+        self.curva = next_curve
+        if self.t > 1:
+            self.posicao = next_curve_end
+            self.t = 1
+            self.forward = False
+        
+        if self.t < 0:
+            self.posicao = next_curve_start
+            self.t = 0
+            self.forward = True
+    
+
     def Desenha(self):
         # print ("Desenha")
         # self.escala.imprime("\tEscala: ")
         print ("\tRotacao: ", self.rotacao)
 
         if self.t > 1:
-            self.curva = random.choice(self.curva.getAdjacentCurvesAtEnd())
-            self.t = 1
+            next_curve = random.choice(self.curva.getAdjacentCurvesAtEnd())
+            self.switchCurve(next_curve)
 
         if self.t < 0:
-            self.curva = random.choice(self.curva.getAdjacentCurvesAtStart())
-            self.t = 0
+            next_curve = random.choice(self.curva.getAdjacentCurvesAtStart())
+            self.switchCurve(next_curve)
 
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)
