@@ -273,11 +273,6 @@ def arrow_keys(a_keys: int, x: int, y: int):
         Personagens[0].moveUpCurve()
     if a_keys == GLUT_KEY_DOWN:       # Se pressionar DOWN
         Personagens[0].moveDownCurve()
-    if a_keys == GLUT_KEY_LEFT:       # Se pressionar LEFT
-        Personagens[0].posicao.x -= 5
-        
-    if a_keys == GLUT_KEY_RIGHT:      # Se pressionar RIGHT
-        Personagens[0].posicao.x += 5
 
     glutPostRedisplay()
 
