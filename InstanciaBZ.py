@@ -71,12 +71,12 @@ class InstanciaBZ:
         if self.t > 1:
             self.posicao = next_curve_end
             self.t = 1
-            self.forward = False
+            self.forward = not self.forward
         
         if self.t < 0:
             self.posicao = next_curve_start
             self.t = 0
-            self.forward = True
+            self.forward = not self.forward
     
 
     def Desenha(self):
