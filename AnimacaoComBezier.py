@@ -247,7 +247,7 @@ def display():
 
     DesenhaPersonagens()
     DesenhaCurvas()
-    
+
     glutSwapBuffers()
 
 # ***********************************************************************************
@@ -270,9 +270,9 @@ def keyboard(*args):
 # **********************************************************************
 def arrow_keys(a_keys: int, x: int, y: int):
     if a_keys == GLUT_KEY_UP:         # Se pressionar UP
-        Personagens[0].moveUpCurve()
+        Personagens[0].moveOnCurve(True)
     if a_keys == GLUT_KEY_DOWN:       # Se pressionar DOWN
-        Personagens[0].moveDownCurve()
+        Personagens[0].moveOnCurve(False)
 
     glutPostRedisplay()
 
