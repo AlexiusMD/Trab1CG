@@ -21,6 +21,9 @@ class InstanciaBZ:
         self.t = 0.0
         self.curva = curva
         self.entry_at_line_start = True
+        self.previous_movement_direction = None
+        self.next_curve = curva
+        self.is_next_curve_set = False
         self.inverted = False
     
     """ Imprime os valores de cada eixo do ponto """
@@ -39,7 +42,11 @@ class InstanciaBZ:
             self.posicao = self.curva.Calcula(self.t)
 
     def moveOnCurve(self, is_moving_forward):
-        print(f"entry: {self.entry_at_line_start} movement: {is_moving_forward}")
+        if self.previous_movement_direction != is_moving_forward:
+            self.is_next_curve_set = False
+
+        self.previous_movement_direction = is_moving_forward
+
         if not (is_moving_forward ^ self.entry_at_line_start):
             self.increaseT(is_moving_forward)
         else:
@@ -47,28 +54,32 @@ class InstanciaBZ:
 
     def increaseT(self, is_moving_forward):
         self.t += 0.05
+        if self.t >= 0.5 and not self.is_next_curve_set:
+            self.next_curve = self.selectCurves(is_moving_forward)
         if self.t > 1:
             self.t = 1
-            self.switchCurve(is_moving_forward)
+            self.switchCurve()
         self.update_position()
 
     def decreaseT(self, is_moving_forward):
         self.t -= 0.05
+        if self.t <= 0.5 and not self.is_next_curve_set:
+            self.next_curve = self.selectCurves(is_moving_forward)
         if self.t < 0:
             self.t = 0
-            self.switchCurve(is_moving_forward)
+            self.switchCurve()
         self.update_position()
 
-    def switchCurve(self, is_moving_forward):
-        next_curve = self.selectCurves(is_moving_forward)
-        self.curva = next_curve
+    def switchCurve(self):
+        self.is_next_curve_set = False
+        self.entry_at_line_start = not self.entry_at_line_start
+        self.curva = self.next_curve
 
     def selectCurves(self, is_moving_forward):
+        self.is_next_curve_set = True
         if not (self.entry_at_line_start ^ is_moving_forward):
-            self.entry_at_line_start = not self.entry_at_line_start
             return random.choice(self.curva.getAdjacentCurvesAtEnd())
         
-        self.entry_at_line_start = not self.entry_at_line_start
         return random.choice(self.curva.getAdjacentCurvesAtStart())
     
     def Desenha(self):

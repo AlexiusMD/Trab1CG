@@ -219,7 +219,7 @@ def DesenhaCurvas():
     #for v, I in enumerate(Curvas):
     for I in Curvas:
 
-        if I == Personagens[0].curva:
+        if I == Personagens[0].next_curve:
             glLineWidth(6)
             SetColor(SkyBlue)
         else:
