@@ -213,7 +213,7 @@ def DesenhaPoligonoDeControle(curva):
         glVertex2d(P.x, P.y)
     glEnd()
 
-# ***********************************************************************************
+# ****************************************************a*******************************
 def DesenhaCurvas():
     v = 0
     #for v, I in enumerate(Curvas):

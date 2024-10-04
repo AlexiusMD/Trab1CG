@@ -52,6 +52,8 @@ class InstanciaBZ:
         else:
             self.decreaseT(is_moving_forward)
 
+        self.rotacao = self.calculateRotation()
+
     def increaseT(self, is_moving_forward):
         self.t += 0.05
         if self.t >= 0.5 and not self.is_next_curve_set:
@@ -81,11 +83,29 @@ class InstanciaBZ:
             return random.choice(self.curva.getAdjacentCurvesAtEnd())
         
         return random.choice(self.curva.getAdjacentCurvesAtStart())
-    
+
+    def calculateTangent(self):
+        delta = 0.001
+        t_next = min(self.t + delta, 1.0)
+        current_pos = self.curva.Calcula(self.t)
+        next_pos = self.curva.Calcula(t_next)
+        tangent = Ponto(next_pos.x - current_pos.x, next_pos.y - current_pos.y, 0)
+        return tangent
+
+    def calculateRotation(self):
+        tangent = self.calculateTangent()
+        angle = math.atan2(tangent.y, tangent.x)
+
+        return math.degrees(angle) - 90
+
+
     def Desenha(self):
+        self.rotacao = self.calculateRotation()
+
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)
         glRotatef(self.rotacao, 0, 0, 1)
         glScalef(self.escala.x, self.escala.y, self.escala.z)
         self.modelo()
-        glPopMatrix() 
+        
+        glPopMatrix()
