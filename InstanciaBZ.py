@@ -26,6 +26,7 @@ class InstanciaBZ:
         self.next_curve = curva
         self.is_next_curve_set = False
         self.inverted = False
+        self.center = Ponto(3.5, 7, 0)
 
     def imprime(self, msg=None):
         if msg is not None:
@@ -49,8 +50,6 @@ class InstanciaBZ:
             self.increaseT()
         else:
             self.decreaseT()
-
-        self.rotacao = self.calculateRotation()
 
     def increaseT(self):
         self.t += 0.05
@@ -92,13 +91,18 @@ class InstanciaBZ:
     def calculateRotation(self):
         tangent = self.calculateTangent()
         angle = math.atan2(tangent.y, tangent.x)
+        
+        if angle == 0:
+            return self.rotacao
+
         if not (self.entry_at_line_start ^ self.is_moving_forward):
             return math.degrees(angle) - 90
         return math.degrees(angle) + 90
 
     def Desenha(self):
         self.rotacao = self.calculateRotation()
-
+        print(f"T: {self.t}")
+        print(f"R: {self.rotacao}")
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)
         glRotatef(self.rotacao, 0, 0, 1)
