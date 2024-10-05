@@ -70,9 +70,12 @@ def CarregaModelos():
 def DesenhaPersonagem():
     SetColor(YellowGreen)
     glTranslatef(0,0,0)
-    # Mapa.desenhaPoligono()
     Mastro.desenhaPoligono() #Inicializa personagem triangulo
 
+def DesenhaInimigo():
+    SetColor(Red)
+    glTranslatef(0,0,0)
+    Mastro.desenhaPoligono()
 
 # ***********************************************************************************
 # Esta função deve instanciar todos os personagens do cenário
@@ -80,12 +83,25 @@ def DesenhaPersonagem():
 def CriaInstancias():
     global Personagens
 
-    Personagens.append(InstanciaBZ(Curvas[8]))
+    Personagens.append(InstanciaBZ(Curvas[8], "player"))
     Personagens[0].modelo = DesenhaPersonagem
     Personagens[0].rotacao = 0
     Personagens[0].posicao = Ponto(0,0)
     Personagens[0].escala = Ponto (1,1,1) 
 
+
+    available_curves = list(range(0, len(Curvas)))
+    available_curves.remove(8) 
+
+    for i in range(1, 11):
+        curve = random.choice(available_curves)
+        available_curves.remove(curve)
+        
+        Personagens.append(InstanciaBZ(Curvas[curve], "enemy"))
+        Personagens[i].modelo = DesenhaInimigo
+        Personagens[i].rotacao = 0
+        Personagens[i].posicao = Ponto(0,0)
+        Personagens[i].escala = Ponto (1,1,1)
 
 # ***********************************************************************************
 def CriaCurvas():
@@ -231,6 +247,16 @@ def DesenhaCurvas():
         #I.TracaPoligonoDeControle()
         #DesenhaPoligonoDeControle(v)
 
+# ****************************************************a*******************************
+def MovimentaInimigos():
+    Inimigos = Personagens[1:]
+    direction = True
+
+    for I in Inimigos:
+        I.moveOnCurve(direction)
+        I.Desenha()
+        direction = not direction
+
 
 # ***********************************************************************************
 # Executada todo frame
@@ -247,6 +273,7 @@ def display():
 
     DesenhaPersonagens()
     DesenhaCurvas()
+    MovimentaInimigos()
 
     glutSwapBuffers()
 

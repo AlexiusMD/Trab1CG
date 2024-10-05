@@ -13,7 +13,8 @@ import random
 import math
 
 class InstanciaBZ:   
-    def __init__(self, curva):
+    def __init__(self, curva, type):
+        self.type = type
         self.posicao = Ponto(0, 0, 0)
         self.escala = Ponto(1, 1, 1)
         self.rotacao: float = 0.0
@@ -52,7 +53,7 @@ class InstanciaBZ:
             self.decreaseT()
 
     def increaseT(self):
-        self.t += 0.05
+        self.t += 0.05 if self.type == "player" else 0.005
         if self.t >= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
         if self.t > 1:
@@ -61,7 +62,7 @@ class InstanciaBZ:
         self.update_position()
 
     def decreaseT(self):
-        self.t -= 0.05
+        self.t -= 0.05 if self.type == "player" else 0.005
         if self.t <= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
         if self.t < 0:
