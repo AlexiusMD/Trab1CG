@@ -253,8 +253,8 @@ def MovimentaInimigos():
     direction = True
 
     for I in Inimigos:
-        I.moveOnCurve(direction)
         I.Desenha()
+        I.moveOnCurve(direction)
         direction = not direction
 
 
@@ -272,8 +272,8 @@ def display():
     # DesenhaEixos()
 
     DesenhaPersonagens()
-    DesenhaCurvas()
     MovimentaInimigos()
+    DesenhaCurvas()
 
     glutSwapBuffers()
 
