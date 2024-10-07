@@ -105,3 +105,11 @@ def HaInterseccao(k: Ponto, l: Ponto, m: Ponto, n: Ponto) -> bool:
 
     return s>=0.0 and s <=1.0 and t>=0.0 and t<=1.0
 
+# **********************************************************************
+# distancia(p1: Ponto, p2: Ponto)
+# Calcula a distância entre dois pontos
+#
+# **********************************************************************
+def distancia(p1: Ponto, p2: Ponto) -> float:
+    return math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+

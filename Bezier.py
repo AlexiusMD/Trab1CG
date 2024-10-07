@@ -1,5 +1,5 @@
 
-from Ponto import Ponto
+from Ponto import Ponto, distancia
 from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
@@ -24,6 +24,7 @@ class Bezier:
             self.Coords.append(i)
         #P = self.Coords[2]
         #P.imprime()
+        self.calculateCurveLength()
 
     def Calcula(self, t):
         UmMenosT = 1-t
@@ -55,6 +56,21 @@ class Bezier:
     def getPC(self, i):
         temp = copy.deepcopy(self.Coords[i])
         return temp
+    
+    def calculateCurveLength(self):
+        t=0.0
+        DeltaT = 1.0/50
+        P = Ponto
+        length = 0.0
+        P0 = self.Calcula(0.0)
+        while(t<1.0):
+            P = self.Calcula(t)
+            length += distancia(P, P0)
+            P0 = P
+            t += DeltaT
+        P = self.Calcula(1.0)
+
+        self.ComprimentoTotalDaCurva = length
     
     def getAdjacentCurvesAtStart(self):
         return self.adjacentAtStart
