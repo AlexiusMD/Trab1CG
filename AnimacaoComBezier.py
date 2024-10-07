@@ -89,6 +89,7 @@ def CriaInstancias():
     Personagens[0].rotacao = 0
     Personagens[0].posicao = Ponto(0,0)
     Personagens[0].escala = Ponto (1,1,1) 
+    Personagens[0].velocity = 0
 
 
     available_curves = list(range(0, len(Curvas)))
@@ -249,10 +250,13 @@ def DesenhaCurvas():
         #DesenhaPoligonoDeControle(v)
 
 # ****************************************************a*******************************
-def MovimentaInimigos():
+def MovimentaPersonagens():
+    Jogador = Personagens[0]
     Inimigos = Personagens[1:]
-    direction = True
+    
+    Personagens[0].moveOnCurve(Jogador.is_moving_forward)
 
+    direction = True
     for I in Inimigos:
         I.Desenha()
         I.moveOnCurve(direction)
@@ -273,7 +277,7 @@ def display():
     # DesenhaEixos()
 
     DesenhaPersonagens()
-    MovimentaInimigos()
+    MovimentaPersonagens()
     DesenhaCurvas()
 
     glutSwapBuffers()
@@ -290,6 +294,11 @@ def keyboard(*args):
         os._exit(0)
     if args[0] == ESCAPE:
         os._exit(0)
+    if args[0] == b' ':
+        if Personagens[0].velocity == 0:
+            Personagens[0].velocity = 0.7
+        else:
+            Personagens[0].velocity = 0
 # Forca o redesenho da tela
     glutPostRedisplay()
 
@@ -298,9 +307,9 @@ def keyboard(*args):
 # **********************************************************************
 def arrow_keys(a_keys: int, x: int, y: int):
     if a_keys == GLUT_KEY_UP:         # Se pressionar UP
-        Personagens[0].moveOnCurve(True)
+        Personagens[0].is_moving_forward = True
     if a_keys == GLUT_KEY_DOWN:       # Se pressionar DOWN
-        Personagens[0].moveOnCurve(False)
+        Personagens[0].is_moving_forward = False
 
     glutPostRedisplay()
 

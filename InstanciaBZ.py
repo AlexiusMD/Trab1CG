@@ -28,6 +28,7 @@ class InstanciaBZ:
         self.is_next_curve_set = False
         self.inverted = False
         self.center = Ponto(0, 4.67, 0)
+        self.velocity = 0.7
 
     def imprime(self, msg=None):
         if msg is not None:
@@ -53,7 +54,8 @@ class InstanciaBZ:
             self.decreaseT()
 
     def increaseT(self):
-        self.t += 0.05 if self.type == "player" else 0.005
+        deltaT = self.velocity / self.curva.ComprimentoTotalDaCurva
+        self.t += deltaT
         if self.t >= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
         if self.t > 1:
@@ -62,7 +64,8 @@ class InstanciaBZ:
         self.update_position()
 
     def decreaseT(self):
-        self.t -= 0.05 if self.type == "player" else 0.005
+        deltaT = self.velocity / self.curva.ComprimentoTotalDaCurva
+        self.t -= deltaT
         if self.t <= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
         if self.t < 0:
