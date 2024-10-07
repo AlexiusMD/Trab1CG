@@ -290,6 +290,8 @@ def keyboard(*args):
         os._exit(0)
     if args[0] == ESCAPE:
         os._exit(0)
+    if args[0] == b'c':
+        Personagens[0].onDemandCurve()
 # Forca o redesenho da tela
     glutPostRedisplay()
 
