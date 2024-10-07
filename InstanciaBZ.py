@@ -29,6 +29,7 @@ class InstanciaBZ:
         self.inverted = False
         self.center = Ponto(0, 4.67, 0)
         self.velocity = 0.7
+        self.curve_list = self.curva.getAdjacentCurvesAtEnd()
 
     def imprime(self, msg=None):
         if msg is not None:
@@ -81,7 +82,10 @@ class InstanciaBZ:
     def selectCurves(self):
         self.is_next_curve_set = True
         if not (self.entry_at_line_start ^ self.is_moving_forward):
+            self.curve_list = self.curva.getAdjacentCurvesAtEnd()
             return random.choice(self.curva.getAdjacentCurvesAtEnd())
+        
+        self.curve_list = self.curva.getAdjacentCurvesAtStart()
         return random.choice(self.curva.getAdjacentCurvesAtStart())
 
     def calculateTangent(self):
@@ -102,6 +106,11 @@ class InstanciaBZ:
         if not (self.entry_at_line_start ^ self.is_moving_forward):
             return math.degrees(angle) - 90
         return math.degrees(angle) + 90
+    
+    def onDemandCurve(self):
+        current_index = self.curve_list.index(self.next_curve)
+        next_curve_index = (current_index + 1) % len(self.curve_list)
+        self.next_curve = self.curve_list[next_curve_index]
 
     def Desenha(self):
         self.rotacao = self.calculateRotation()

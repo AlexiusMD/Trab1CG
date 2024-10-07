@@ -299,6 +299,8 @@ def keyboard(*args):
             Personagens[0].velocity = 0.7
         else:
             Personagens[0].velocity = 0
+    if args[0] == b'c':
+        Personagens[0].onDemandCurve()
 # Forca o redesenho da tela
     glutPostRedisplay()
 
