@@ -30,6 +30,7 @@ import random
 
 global current_curve
 
+NUM_ENEMIES = 10
 ValidCurves = {}
 aux_points = []
 
@@ -93,7 +94,7 @@ def CriaInstancias():
     available_curves = list(range(0, len(Curvas)))
     available_curves.remove(8) 
 
-    for i in range(1, 11):
+    for i in range(1, NUM_ENEMIES + 1):
         curve = random.choice(available_curves)
         available_curves.remove(curve)
         
