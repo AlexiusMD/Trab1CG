@@ -28,7 +28,7 @@ class InstanciaBZ:
         self.is_next_curve_set = False
         self.inverted = False
         self.center = Ponto(0, 4.67, 0)
-        self.velocity = 30
+        self.velocity = 25
         self.curve_list = self.curva.getAdjacentCurvesAtEnd()
         self.collision_radius = 5
 

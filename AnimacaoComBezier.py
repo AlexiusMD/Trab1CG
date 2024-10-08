@@ -331,7 +331,7 @@ def keyboard(*args):
         os._exit(0)
     if args[0] == b' ':
         if Personagens[0].velocity == 0:
-            Personagens[0].velocity = 30
+            Personagens[0].velocity = 25
         else:
             Personagens[0].velocity = 0
     if args[0] == b'c':
