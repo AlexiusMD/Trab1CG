@@ -89,8 +89,8 @@ class InstanciaBZ:
         self.curve_list = self.curva.getAdjacentCurvesAtStart()
         return random.choice(self.curva.getAdjacentCurvesAtStart())
 
-    def calculateTangent(self):
-        delta = self.velocity / self.curva.ComprimentoTotalDaCurva
+    def calculateTangent(self, deltatime):
+        delta = (self.velocity * deltatime) / self.curva.ComprimentoTotalDaCurva
         t_next = min(self.t + delta, 1.0)
         
         current_pos = self.curva.Calcula(self.t)
@@ -99,8 +99,8 @@ class InstanciaBZ:
         tangent = Ponto(next_pos.x - current_pos.x, next_pos.y - current_pos.y, 0)
         return tangent
 
-    def calculateRotation(self):
-        tangent = self.calculateTangent()
+    def calculateRotation(self, deltatime):
+        tangent = self.calculateTangent(deltatime)
         angle = math.atan2(tangent.y, tangent.x)
         
         if angle == 0:
@@ -125,8 +125,8 @@ class InstanciaBZ:
             glVertex2f(x + self.posicao.x, y + self.posicao.y)
         glEnd()
 
-    def Desenha(self):
-        self.rotacao = self.calculateRotation()
+    def Desenha(self, deltatime):
+        self.rotacao = self.calculateRotation(deltatime)
         
         glPushMatrix()
         glTranslatef(self.posicao.x, self.posicao.y, 0)

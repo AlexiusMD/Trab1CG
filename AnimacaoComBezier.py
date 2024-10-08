@@ -230,9 +230,9 @@ def DesenhaEixos():
     glEnd()
 
 # ***********************************************************************************
-def DesenhaPersonagens():
+def DesenhaPersonagens(deltatime):
     for I in Personagens:
-        I.Desenha()
+        I.Desenha(deltatime)
 
 
 # ***********************************************************************************
@@ -277,12 +277,12 @@ def MovimentaPersonagens(deltatime):
     if elapsed_time >= DELAY_BEFORE_MOVEMENT:
         direction = True
         for I in Inimigos:
-            I.Desenha()
+            I.Desenha(deltatime)
             I.moveOnCurve(direction, deltatime)
             direction = not direction
     else:
         for I in Inimigos:
-            I.Desenha()
+            I.Desenha(deltatime)
 
 # ***********************************************************************************
 # Executada todo frame
@@ -299,12 +299,13 @@ def display():
     # DesenhaEixos()q
 
     DesenhaCurvas()
-    DesenhaPersonagens()
 
     current_time = time.time()
     deltatime = current_time - last_frame_time
     last_frame_time = current_time
 
+
+    DesenhaPersonagens(deltatime)
     MovimentaPersonagens(deltatime)
 
     elapsed_time = current_time - start_time
