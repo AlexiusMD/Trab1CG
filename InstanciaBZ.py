@@ -90,10 +90,12 @@ class InstanciaBZ:
         return random.choice(self.curva.getAdjacentCurvesAtStart())
 
     def calculateTangent(self):
-        delta = 0.001
+        delta = self.velocity / self.curva.ComprimentoTotalDaCurva
         t_next = min(self.t + delta, 1.0)
+        
         current_pos = self.curva.Calcula(self.t)
         next_pos = self.curva.Calcula(t_next)
+        
         tangent = Ponto(next_pos.x - current_pos.x, next_pos.y - current_pos.y, 0)
         return tangent
 
