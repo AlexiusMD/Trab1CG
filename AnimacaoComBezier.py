@@ -54,6 +54,9 @@ Curvas = []
 
 angulo = 0.0
 
+start_time = None
+DELAY_BEFORE_MOVEMENT = 3
+
 # ***********************************************************************************
 #
 # ***********************************************************************************
@@ -158,7 +161,7 @@ def addToValidCurves(curve, point):
 
 # ***********************************************************************************
 def init():
-    global Min, Max
+    global Min, Max, start_time
     # Define a cor do fundo da tela
     glClearColor(1, 1, 1, 1)
 
@@ -169,6 +172,8 @@ def init():
     d:float = 100
     Min = Ponto(-d,-d)
     Max = Ponto(d,d)
+
+    start_time = time.time()
 
 # ****************************************************************
 def animate():
@@ -257,17 +262,25 @@ def DesenhaCurvas():
 
 # ****************************************************a*******************************
 def MovimentaPersonagens():
+    global start_time
+    
+    current_time = time.time()
+    elapsed_time = current_time - start_time
+
     Jogador = Personagens[0]
     Inimigos = Personagens[1:]
     
     Personagens[0].moveOnCurve(Jogador.is_moving_forward)
 
-    direction = True
-    for I in Inimigos:
-        I.Desenha()
-        I.moveOnCurve(direction)
-        direction = not direction
-
+    if elapsed_time >= DELAY_BEFORE_MOVEMENT:
+        direction = True
+        for I in Inimigos:
+            I.Desenha()
+            I.moveOnCurve(direction)
+            direction = not direction
+    else:
+        for I in Inimigos:
+            I.Desenha()
 
 # ***********************************************************************************
 # Executada todo frame
@@ -280,11 +293,17 @@ def display():
     glLoadIdentity()
 
     glColor3f(1,0,0) # R, G, B  [0..1]
-    # DesenhaEixos()
+    # DesenhaEixos()q
 
     DesenhaCurvas()
     DesenhaPersonagens()
     MovimentaPersonagens()
+
+    current_time = time.time()
+    elapsed_time = current_time - start_time
+    if elapsed_time < DELAY_BEFORE_MOVEMENT:
+        remaining_time = int(DELAY_BEFORE_MOVEMENT - elapsed_time) + 1
+        print(remaining_time)
 
     handleCollisions()
 
