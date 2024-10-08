@@ -88,16 +88,16 @@ def DesenhaInimigo():
 def CriaInstancias():
     global Personagens
 
-    Personagens.append(InstanciaBZ(Curvas[8], "player"))
+    available_curves = list(range(0, len(Curvas)))
+    curve = random.choice(available_curves)
+    available_curves.remove(curve)
+
+    Personagens.append(InstanciaBZ(Curvas[curve], "player"))
     Personagens[0].modelo = DesenhaPersonagem
     Personagens[0].rotacao = 0
     Personagens[0].posicao = Ponto(0,0)
     Personagens[0].escala = Ponto (1,1,1) 
     Personagens[0].velocity = 0
-
-
-    available_curves = list(range(0, len(Curvas)))
-    available_curves.remove(8) 
 
     for i in range(1, NUM_ENEMIES + 1):
         curve = random.choice(available_curves)
