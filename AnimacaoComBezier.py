@@ -25,6 +25,7 @@ from Poligonos import *
 from InstanciaBZ import *
 from Bezier import *
 from ListaDeCoresRGB import *
+import time
 import random
 # ***********************************************************************************
 
@@ -71,12 +72,12 @@ def CarregaModelos():
 def DesenhaPersonagem():
     SetColor(YellowGreen)
     glTranslatef(0,0,0)
-    Mastro.desenhaPoligono() #Inicializa personagem triangulo
+    Mastro.desenhaPoligonoPreenchido()
 
 def DesenhaInimigo():
     SetColor(Red)
     glTranslatef(0,0,0)
-    Mastro.desenhaPoligono()
+    Mastro.desenhaPoligonoPreenchido()
 
 # ***********************************************************************************
 # Esta função deve instanciar todos os personagens do cenário
@@ -99,11 +100,14 @@ def CriaInstancias():
         curve = random.choice(available_curves)
         available_curves.remove(curve)
         
-        Personagens.append(InstanciaBZ(Curvas[curve], "enemy"))
-        Personagens[i].modelo = DesenhaInimigo
-        Personagens[i].rotacao = 0
-        Personagens[i].posicao = Ponto(0,0)
-        Personagens[i].escala = Ponto (1,1,1)
+        enemy = InstanciaBZ(Curvas[curve], "enemy")
+        enemy.modelo = DesenhaInimigo
+        enemy.rotacao = 0
+        enemy.t = 0.5
+        enemy.posicao = Curvas[curve].Calcula(enemy.t)
+        enemy.escala = Ponto(1, 1, 1)
+        
+        Personagens.append(enemy)
 
 # ***********************************************************************************
 def CriaCurvas():
@@ -140,6 +144,8 @@ def CriaCurvas():
                 curva.adjacentAtStart.append(curva_aux)
             if end.x == end_aux.x and end.y == end_aux.y and curva_aux is not curva:
                 curva.adjacentAtEnd.append(curva_aux)
+
+            # or (end.x == start_aux.x and end.y == start_aux.y)
 
 # ***********************************************************************************
 
@@ -276,9 +282,11 @@ def display():
     glColor3f(1,0,0) # R, G, B  [0..1]
     # DesenhaEixos()
 
+    DesenhaCurvas()
     DesenhaPersonagens()
     MovimentaPersonagens()
-    DesenhaCurvas()
+
+    handleCollisions()
 
     glutSwapBuffers()
 
@@ -345,6 +353,23 @@ def mouseMove(x: int, y: int):
     #glutPostRedisplay()
     return
 
+def handleCollisions():
+    for E in Personagens[1:]:
+        p1 = Personagens[0].posicao
+        p2 = E.posicao
+
+        dist = distancia(p1, p2)
+        
+        if dist < Personagens[0].collision_radius * 2:
+            print("COLISÃO!")
+            end()
+
+def end():
+    for P in Personagens:
+        P.velocity = 0
+    
+    time.sleep(5)
+    os._exit(0)
 
 # ***********************************************************************************
 # Programa Principal

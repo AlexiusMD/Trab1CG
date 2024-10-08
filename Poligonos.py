@@ -8,6 +8,7 @@ from OpenGL.GL import *
 from OpenGL.GLUT import *
 from OpenGL.GLU import *
 from Ponto import *
+from ListaDeCoresRGB import *
 import copy
 
 class Polygon:
@@ -30,11 +31,21 @@ class Polygon:
         #return self.Vertices[i]
     
     def desenhaPoligono(self):
-        #print ("Desenha Poligono - Tamanho:", len(self.Vertices))
-        glBegin(GL_LINE_LOOP)
+        glBegin(GL_TRIANGLE_FAN)
         for V in self.Vertices:
-            glVertex3f(V.x,V.y,V.z)
-        glEnd();
+            glVertex3f(V.x, V.y, V.z)
+        glEnd()
+
+    def desenhaPoligonoPreenchido(self):
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        self.desenhaPoligono()
+        
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+        glLineWidth(2)
+        SetColor(Black)
+        self.desenhaPoligono()
+        
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
 
     def desenhaVertices(self):
         glBegin(GL_POINTS);

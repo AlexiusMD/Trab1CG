@@ -28,8 +28,9 @@ class InstanciaBZ:
         self.is_next_curve_set = False
         self.inverted = False
         self.center = Ponto(0, 4.67, 0)
-        self.velocity = 0.7
+        self.velocity = 0.1
         self.curve_list = self.curva.getAdjacentCurvesAtEnd()
+        self.collision_radius = 5
 
     def imprime(self, msg=None):
         if msg is not None:
@@ -112,6 +113,16 @@ class InstanciaBZ:
         next_curve_index = (current_index + 1) % len(self.curve_list)
         self.next_curve = self.curve_list[next_curve_index]
 
+    def DesenhaHitbox(self):
+        num_segments = 32
+        glBegin(GL_LINE_LOOP)
+        for i in range(num_segments):
+            theta = 2.0 * math.pi * i / num_segments
+            x = self.collision_radius * math.cos(theta)
+            y = self.collision_radius * math.sin(theta)
+            glVertex2f(x + self.posicao.x, y + self.posicao.y)
+        glEnd()
+
     def Desenha(self):
         self.rotacao = self.calculateRotation()
         
@@ -122,3 +133,6 @@ class InstanciaBZ:
         glScalef(self.escala.x, self.escala.y, self.escala.z)
         self.modelo()
         glPopMatrix()
+
+        # glColor3f(1.0, 0, 0)
+        # self.DesenhaHitbox()
