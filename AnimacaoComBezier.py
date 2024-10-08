@@ -55,6 +55,7 @@ Curvas = []
 angulo = 0.0
 
 start_time = None
+last_frame_time = None
 DELAY_BEFORE_MOVEMENT = 3
 
 # ***********************************************************************************
@@ -161,7 +162,7 @@ def addToValidCurves(curve, point):
 
 # ***********************************************************************************
 def init():
-    global Min, Max, start_time
+    global Min, Max, start_time, last_frame_time
     # Define a cor do fundo da tela
     glClearColor(1, 1, 1, 1)
 
@@ -174,6 +175,7 @@ def init():
     Max = Ponto(d,d)
 
     start_time = time.time()
+    last_frame_time = start_time
 
 # ****************************************************************
 def animate():
@@ -261,7 +263,7 @@ def DesenhaCurvas():
         #DesenhaPoligonoDeControle(v)
 
 # ****************************************************a*******************************
-def MovimentaPersonagens():
+def MovimentaPersonagens(deltatime):
     global start_time
     
     current_time = time.time()
@@ -270,13 +272,13 @@ def MovimentaPersonagens():
     Jogador = Personagens[0]
     Inimigos = Personagens[1:]
     
-    Personagens[0].moveOnCurve(Jogador.is_moving_forward)
+    Personagens[0].moveOnCurve(Jogador.is_moving_forward, deltatime)
 
     if elapsed_time >= DELAY_BEFORE_MOVEMENT:
         direction = True
         for I in Inimigos:
             I.Desenha()
-            I.moveOnCurve(direction)
+            I.moveOnCurve(direction, deltatime)
             direction = not direction
     else:
         for I in Inimigos:
@@ -285,6 +287,7 @@ def MovimentaPersonagens():
 # ***********************************************************************************
 # Executada todo frame
 def display():
+    global last_frame_time
 
 	# Limpa a tela coma cor de fundo
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -297,9 +300,13 @@ def display():
 
     DesenhaCurvas()
     DesenhaPersonagens()
-    MovimentaPersonagens()
 
     current_time = time.time()
+    deltatime = current_time - last_frame_time
+    last_frame_time = current_time
+
+    MovimentaPersonagens(deltatime)
+
     elapsed_time = current_time - start_time
     if elapsed_time < DELAY_BEFORE_MOVEMENT:
         remaining_time = int(DELAY_BEFORE_MOVEMENT - elapsed_time) + 1
@@ -323,7 +330,7 @@ def keyboard(*args):
         os._exit(0)
     if args[0] == b' ':
         if Personagens[0].velocity == 0:
-            Personagens[0].velocity = 0.5
+            Personagens[0].velocity = 30
         else:
             Personagens[0].velocity = 0
     if args[0] == b'c':

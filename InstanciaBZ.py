@@ -28,7 +28,7 @@ class InstanciaBZ:
         self.is_next_curve_set = False
         self.inverted = False
         self.center = Ponto(0, 4.67, 0)
-        self.velocity = 0.5
+        self.velocity = 30
         self.curve_list = self.curva.getAdjacentCurvesAtEnd()
         self.collision_radius = 5
 
@@ -43,7 +43,7 @@ class InstanciaBZ:
         if self.curva:
             self.posicao = self.curva.Calcula(self.t)
 
-    def moveOnCurve(self, is_moving_forward):
+    def moveOnCurve(self, is_moving_forward, deltatime):
         self.is_moving_forward = is_moving_forward
         if self.previous_movement_direction != is_moving_forward:
             self.is_next_curve_set = False
@@ -51,12 +51,12 @@ class InstanciaBZ:
         self.previous_movement_direction = is_moving_forward
 
         if not (is_moving_forward ^ self.entry_at_line_start):
-            self.increaseT()
+            self.increaseT(deltatime)
         else:
-            self.decreaseT()
+            self.decreaseT(deltatime)
 
-    def increaseT(self):
-        deltaT = self.velocity / self.curva.ComprimentoTotalDaCurva
+    def increaseT(self, deltatime):
+        deltaT = (self.velocity * deltatime) / self.curva.ComprimentoTotalDaCurva
         self.t += deltaT
         if self.t >= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
@@ -65,8 +65,8 @@ class InstanciaBZ:
             self.switchCurve()
         self.update_position()
 
-    def decreaseT(self):
-        deltaT = self.velocity / self.curva.ComprimentoTotalDaCurva
+    def decreaseT(self, deltatime):
+        deltaT = (self.velocity * deltatime) / self.curva.ComprimentoTotalDaCurva
         self.t -= deltaT
         if self.t <= 0.5 and not self.is_next_curve_set:
             self.next_curve = self.selectCurves()
