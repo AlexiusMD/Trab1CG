@@ -304,7 +304,7 @@ def keyboard(*args):
         os._exit(0)
     if args[0] == b' ':
         if Personagens[0].velocity == 0:
-            Personagens[0].velocity = 0.7
+            Personagens[0].velocity = 0.5
         else:
             Personagens[0].velocity = 0
     if args[0] == b'c':
@@ -368,7 +368,7 @@ def end():
     for P in Personagens:
         P.velocity = 0
     
-    time.sleep(5)
+    time.sleep(2)
     os._exit(0)
 
 # ***********************************************************************************
